@@ -26,9 +26,9 @@
   --r: 12px;
   --r-sm: 8px;
 }
-
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
@@ -36,7 +36,7 @@ body {
   min-height: 100vh;
   line-height: 1.6;
 }
-
+ 
 body::before {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
@@ -44,16 +44,16 @@ body::before {
     radial-gradient(ellipse 70% 50% at 20% 0%, rgba(200,148,58,0.08) 0%, transparent 60%),
     radial-gradient(ellipse 50% 60% at 85% 100%, rgba(139,92,246,0.06) 0%, transparent 60%);
 }
-
+ 
 .page {
   position: relative; z-index: 1;
   max-width: 660px; margin: 0 auto;
   padding: 2.5rem 1.5rem 5rem;
 }
-
+ 
 /* ── INTRO ── */
 .intro { animation: up .5s ease both; }
-
+ 
 .tag {
   display: inline-flex; align-items: center; gap: 7px;
   font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
@@ -61,7 +61,7 @@ body::before {
   padding: 5px 13px; border-radius: 100px; margin-bottom: 2rem;
 }
 .tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
-
+ 
 .intro-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(34px, 8vw, 54px);
@@ -69,12 +69,12 @@ body::before {
   color: var(--ink); margin-bottom: 1.2rem;
 }
 .intro-title em { font-style: italic; color: var(--gold2); }
-
+ 
 .intro-sub {
   font-size: 15px; color: var(--ink2); max-width: 500px;
   line-height: 1.75; margin-bottom: 2.5rem;
 }
-
+ 
 .animals-row {
   display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem;
 }
@@ -85,7 +85,7 @@ body::before {
   font-size: 13px; color: var(--ink2); transition: all .2s;
 }
 .a-chip:hover { border-color: var(--gold); color: var(--gold); }
-
+ 
 .btn-start {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 14px 28px;
@@ -96,15 +96,56 @@ body::before {
   transition: transform .15s, background .15s;
 }
 .btn-start:hover { background: var(--gold2); transform: translateY(-2px); }
-
+ 
 .intro-note {
   margin-top: 1.25rem; font-size: 13px; color: var(--ink3);
   display: flex; align-items: center; gap: 6px;
 }
-
+ 
+/* ── IDENTITY FORM ── */
+.identity-screen { display: none; animation: up .5s ease both; }
+.identity-screen .id-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 38px);
+  font-weight: 500; line-height: 1.15; margin-bottom: 0.6rem;
+}
+.identity-screen .id-title em { font-style: italic; color: var(--gold2); }
+.identity-screen .id-sub {
+  font-size: 15px; color: var(--ink2); margin-bottom: 2rem;
+}
+.id-form { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.id-field { display: flex; flex-direction: column; gap: 6px; }
+.id-field label {
+  font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink3);
+}
+.id-field input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  padding: 0.85rem 1rem;
+  transition: border-color .2s, background .2s;
+}
+.id-field input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--bg2);
+}
+.id-field input.invalid {
+  border-color: #E05A44;
+}
+.id-warn { font-size: 13px; color: #E05A44; min-height: 18px; margin-bottom: 0.5rem; }
+.id-note {
+  font-size: 12px; color: var(--ink3); margin-top: 1rem;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+ 
 /* ── QUIZ ── */
 .quiz-screen { display: none; }
-
+ 
 .qz-top {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 2rem;
@@ -115,12 +156,12 @@ body::before {
 }
 .qz-logo span { color: var(--gold); font-style: italic; }
 .qz-meta { font-size: 12px; color: var(--ink3); }
-
+ 
 .prog-area { margin-bottom: 2rem; }
 .prog-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 7px; }
 .prog-track { height: 2px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
 .prog-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; transition: width .4s cubic-bezier(.4,0,.2,1); }
-
+ 
 .q-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -129,7 +170,7 @@ body::before {
   margin-bottom: 1.5rem;
   animation: up .3s ease both;
 }
-
+ 
 .q-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .q-cat {
   font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
@@ -141,15 +182,15 @@ body::before {
   border: 1px solid var(--border);
   padding: 3px 9px; border-radius: 100px;
 }
-
+ 
 .q-text {
   font-family: 'Playfair Display', serif;
   font-size: 19px; line-height: 1.45; color: var(--ink);
   margin-bottom: 1.5rem;
 }
-
+ 
 .opts { display: flex; flex-direction: column; gap: 9px; }
-
+ 
 .opt {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 11px 15px;
@@ -177,9 +218,9 @@ body::before {
 .opt.selected .opt-check { background: var(--gold); border-color: var(--gold); }
 .check-svg { display: none; }
 .opt.selected .check-svg { display: block; }
-
+ 
 .nav-row { display: flex; justify-content: space-between; align-items: center; }
-
+ 
 .btn-prev {
   display: flex; align-items: center; gap: 6px;
   padding: 9px 16px;
@@ -190,7 +231,7 @@ body::before {
 }
 .btn-prev:hover { color: var(--ink); border-color: var(--border2); }
 .btn-prev:disabled { opacity: .3; cursor: not-allowed; }
-
+ 
 .btn-next {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 22px;
@@ -200,12 +241,12 @@ body::before {
   cursor: pointer; transition: all .15s;
 }
 .btn-next:hover { background: var(--gold2); transform: translateY(-1px); }
-
+ 
 .warn-msg { font-size: 12px; color: #E05A44; text-align: center; margin-top: .75rem; min-height: 18px; }
-
+ 
 /* ── RESULT ── */
 .result-screen { display: none; }
-
+ 
 .res-hero {
   background: var(--card);
   border: 1px solid var(--border);
@@ -216,30 +257,30 @@ body::before {
   animation: revealR .6s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes revealR { from { opacity:0; transform:translateY(20px) scale(.97); } to { opacity:1; transform:none; } }
-
+ 
 .res-emoji-wrap { position: relative; display: inline-block; margin-bottom: 1rem; }
 .res-emoji { font-size: 68px; display: block; animation: anIn .7s cubic-bezier(.16,1,.3,1) .15s both; }
 @keyframes anIn { from { transform: scale(.4) rotate(-12deg); opacity:0; } to { transform: none; opacity:1; } }
 .res-halo { position: absolute; inset: -24px; border-radius: 50%; z-index: -1; animation: halo 3s ease-in-out infinite; }
 @keyframes halo { 0%,100%{ opacity:.3; transform:scale(1); } 50%{ opacity:.6; transform:scale(1.15); } }
-
+ 
 .res-tag { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
 .res-name { font-family: 'Playfair Display', serif; font-size: 38px; line-height: 1.1; margin-bottom: .4rem; }
 .res-score { font-size: 13px; color: var(--ink3); margin-bottom: 1.5rem; }
-
+ 
 .score-row { display: flex; align-items: center; gap: 12px; max-width: 300px; margin: 0 auto 1.5rem; }
 .score-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
 .score-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(.4,0,.2,1) .35s; }
 .score-pts { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; }
-
+ 
 .res-desc { font-size: 14.5px; color: var(--ink2); line-height: 1.75; max-width: 460px; margin: 0 auto; }
-
+ 
 /* ── LEVELS GRID ── */
 .levels-sec { animation: up .4s ease .3s both; }
 .levels-lbl { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); text-align: center; margin-bottom: 1rem; }
-
+ 
 .lvl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-
+ 
 .lvl-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: var(--r-sm); padding: 16px 10px;
@@ -258,7 +299,7 @@ body::before {
 .lc-em { font-size: 28px; display: block; margin-bottom: 7px; }
 .lc-name { font-size: 11px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
 .lc-range { font-size: 10px; color: var(--ink3); }
-
+ 
 /* ── DETAIL PANEL ── */
 .lvl-detail {
   background: var(--card); border: 1px solid var(--border);
@@ -273,7 +314,7 @@ body::before {
 .ld-tips-t { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
 .ld-tip { display: flex; gap: 8px; font-size: 13px; color: var(--ink2); margin-bottom: 6px; }
 .ld-tip::before { content: '→'; color: var(--ink3); flex-shrink: 0; }
-
+ 
 /* ── SCORE BREAKDOWN ── */
 .breakdown {
   background: var(--card); border: 1px solid var(--border);
@@ -287,7 +328,7 @@ body::before {
 .bk-val.pos { color: var(--gold); }
 .bk-val.neg { color: #E05A44; }
 .bk-val.neu { color: var(--ink3); }
-
+ 
 /* ── FOOTER ── */
 .res-footer { text-align: center; margin-top: 2rem; animation: up .4s ease .5s both; }
 .btn-restart {
@@ -298,10 +339,10 @@ body::before {
   cursor: pointer; transition: all .15s;
 }
 .btn-restart:hover { color: var(--ink); border-color: var(--border2); }
-
+ 
 .hidden { display: none !important; }
 @keyframes up { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-
+ 
 @media (max-width: 480px) {
   .page { padding: 1.5rem 1rem 4rem; }
   .lvl-grid { grid-template-columns: repeat(2, 1fr); }
@@ -311,7 +352,7 @@ body::before {
 </head>
 <body>
 <div class="page">
-
+ 
 <!-- ══ INTRO ══ -->
 <div class="intro" id="intro-screen">
   <div class="tag"><span class="tag-dot"></span>Journée IA · 1er Juin 2026</div>
@@ -332,7 +373,37 @@ body::before {
     ~7 minutes · Certaines questions admettent plusieurs réponses
   </p>
 </div>
-
+ 
+<!-- ══ IDENTITY ══ -->
+<div class="identity-screen" id="identity-screen">
+  <div class="tag"><span class="tag-dot"></span>Avant de commencer</div>
+  <h1 class="id-title">On a juste besoin de <em>savoir qui tu es</em></h1>
+  <p class="id-sub">Tes réponses seront enregistrées pour permettre à Jean-Marc de constituer les groupes le 1er Juin. Pas de mot de passe — on te fait confiance.</p>
+  <div class="id-form">
+    <div class="id-field">
+      <label for="id-prenom">Prénom</label>
+      <input type="text" id="id-prenom" autocomplete="given-name" placeholder="Marie" />
+    </div>
+    <div class="id-field">
+      <label for="id-nom">Nom</label>
+      <input type="text" id="id-nom" autocomplete="family-name" placeholder="Dupont" />
+    </div>
+    <div class="id-field">
+      <label for="id-email">Email professionnel</label>
+      <input type="email" id="id-email" autocomplete="email" placeholder="marie.dupont@akoya.fr" />
+    </div>
+  </div>
+  <div class="id-warn" id="id-warn"></div>
+  <button class="btn-start" id="btn-id-continue">
+    Commencer le quiz
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <p class="id-note">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4M8 5.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span>Si tu repasses le quiz plus tard, ta nouvelle tentative sera ajoutée à l'historique — on garde tout pour voir ta progression.</span>
+  </p>
+</div>
+ 
 <!-- ══ QUIZ ══ -->
 <div class="quiz-screen" id="quiz-screen">
   <div class="qz-top">
@@ -366,7 +437,7 @@ body::before {
   </div>
   <p class="warn-msg" id="warn-msg"></p>
 </div>
-
+ 
 <!-- ══ RESULT ══ -->
 <div class="result-screen" id="result-screen">
   <div class="res-hero">
@@ -383,12 +454,12 @@ body::before {
     </div>
     <p class="res-desc" id="res-desc"></p>
   </div>
-
+ 
   <div class="breakdown" id="breakdown">
     <div class="bk-title">Détail par thème</div>
     <div id="bk-rows"></div>
   </div>
-
+ 
   <div class="levels-sec" style="margin-top:1.5rem;">
     <div class="levels-lbl">Compare avec les autres niveaux</div>
     <div class="lvl-grid" id="lvl-grid"></div>
@@ -402,14 +473,14 @@ body::before {
       <div id="ld-tips"></div>
     </div>
   </div>
-
+ 
   <div class="res-footer">
     <button class="btn-restart" onclick="restart()">↩ Recommencer</button>
   </div>
 </div>
-
+ 
 </div><!-- /page -->
-
+ 
 <script>
 /* ─────────────────────────────────────────────
    QUESTIONS
@@ -418,7 +489,7 @@ body::before {
    cat: thème affiché
 ───────────────────────────────────────────── */
 const Q = [
-
+ 
   /* 1 — Posture de production */
   {
     cat: "Posture de production",
@@ -433,7 +504,7 @@ const Q = [
     scores: [1, 3, 5, 2]
     // Déléguer sans itérer = usage passif peu différenciant
   },
-
+ 
   /* 2 — Qualité du prompt (multi) */
   {
     cat: "Craft du prompt",
@@ -450,7 +521,7 @@ const Q = [
     scores: [1, 1, 2, 2, 2, 1]
     // Max 9 points — maîtrise réelle du prompting
   },
-
+ 
   /* 3 — Gestion des erreurs / esprit critique */
   {
     cat: "Esprit critique",
@@ -465,7 +536,7 @@ const Q = [
     scores: [-2, 2, 4, 5]
     // Confiance aveugle = malus significatif
   },
-
+ 
   /* 4 — Connaissance des limites (multi) */
   {
     cat: "Esprit critique",
@@ -481,7 +552,7 @@ const Q = [
     scores: [2, 2, 2, 2, -4]
     // Ne pas identifier de limites = signal d'usage superficiel
   },
-
+ 
   /* 5 — Automatisation */
   {
     cat: "Automatisation",
@@ -495,7 +566,7 @@ const Q = [
     ],
     scores: [0, 2, 4, 6]
   },
-
+ 
   /* 6 — Modèles & outils */
   {
     cat: "Culture IA",
@@ -513,7 +584,7 @@ const Q = [
     scores: [1, 1, 1, 1, 2, 2, 4]
     // Diversité et profondeur d'usage récompensées
   },
-
+ 
   /* 7 — RAG / contexte long */
   {
     cat: "Technique",
@@ -527,7 +598,7 @@ const Q = [
     ],
     scores: [1, 2, 4, 6]
   },
-
+ 
   /* 8 — Posture éthique / confidentialité */
   {
     cat: "Posture & éthique",
@@ -541,7 +612,7 @@ const Q = [
     ],
     scores: [5, 2, 0, -3]
   },
-
+ 
   /* 9 — Évaluation des outputs */
   {
     cat: "Esprit critique",
@@ -556,7 +627,7 @@ const Q = [
     ],
     scores: [0, 1, 2, 3, 3]
   },
-
+ 
   /* 10 — Veille & apprentissage */
   {
     cat: "Culture IA",
@@ -570,7 +641,7 @@ const Q = [
     ],
     scores: [0, 1, 3, 5]
   },
-
+ 
   /* 11 — Thinking partner */
   {
     cat: "Usages avancés",
@@ -584,7 +655,7 @@ const Q = [
     ],
     scores: [0, 2, 4, 6]
   },
-
+ 
   /* 12 — Impact sur la productivité */
   {
     cat: "Impact mesuré",
@@ -598,7 +669,7 @@ const Q = [
     ],
     scores: [0, 1, 3, 5]
   },
-
+ 
   /* 13 — Partage & leadership IA */
   {
     cat: "Leadership IA",
@@ -613,7 +684,7 @@ const Q = [
     ],
     scores: [2, 3, 3, 4, 0]
   },
-
+ 
   /* 14 — Connaissance des modèles */
   {
     cat: "Culture IA",
@@ -629,7 +700,7 @@ const Q = [
     scores: [2, 2, 2, 2, -2]
     // La dernière est fausse — comprendre ≠ prédire statistiquement
   },
-
+ 
   /* 15 — Vision stratégique */
   {
     cat: "Vision stratégique",
@@ -644,7 +715,7 @@ const Q = [
     scores: [0, 2, 3, 5]
   },
 ];
-
+ 
 /* ─────────────────────────────────────────────
    NIVEAUX — 4 groupes calibrés
    Max théorique : ~90 pts (variable selon multi)
@@ -693,7 +764,7 @@ const LEVELS = [
     ]
   },
 ];
-
+ 
 /* ─────────────────────────────────────────────
    ÉTAT
 ───────────────────────────────────────────── */
@@ -702,18 +773,53 @@ let cur = 0;
 let myLvlIdx = -1;
 let openCard = -1;
 let catScores = {};
-
+ 
 /* ─────────────────────────────────────────────
    RENDU
 ───────────────────────────────────────────── */
 function show(id) {
-  ['intro-screen','quiz-screen','result-screen'].forEach(s => {
+  ['intro-screen','identity-screen','quiz-screen','result-screen'].forEach(s => {
     document.getElementById(s).style.display = s === id ? 'block' : 'none';
   });
 }
-
-document.getElementById('btn-start').onclick = () => { show('quiz-screen'); renderQ(); };
-
+ 
+document.getElementById('btn-start').onclick = () => { show('identity-screen'); };
+ 
+/* ─────────────────────────────────────────────
+   IDENTITÉ
+───────────────────────────────────────────── */
+const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+ 
+let userIdentity = { prenom: "", nom: "", email: "" };
+ 
+function validateIdentity() {
+  const prenom = document.getElementById('id-prenom').value.trim();
+  const nom = document.getElementById('id-nom').value.trim();
+  const email = document.getElementById('id-email').value.trim();
+  const warn = document.getElementById('id-warn');
+  ['id-prenom','id-nom','id-email'].forEach(id => document.getElementById(id).classList.remove('invalid'));
+ 
+  if (!prenom) { document.getElementById('id-prenom').classList.add('invalid'); warn.textContent = "Prénom obligatoire"; return false; }
+  if (!nom) { document.getElementById('id-nom').classList.add('invalid'); warn.textContent = "Nom obligatoire"; return false; }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) { document.getElementById('id-email').classList.add('invalid'); warn.textContent = "Email invalide"; return false; }
+ 
+  warn.textContent = "";
+  userIdentity = { prenom, nom, email: email.toLowerCase() };
+  return true;
+}
+ 
+document.getElementById('btn-id-continue').onclick = () => {
+  if (validateIdentity()) { show('quiz-screen'); renderQ(); }
+};
+ 
+/* Permet de soumettre avec Entrée dans le formulaire */
+['id-prenom','id-nom','id-email'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-id-continue').click(); }
+  });
+});
+ 
 function renderQ() {
   const q = Q[cur];
   const total = Q.length;
@@ -723,15 +829,15 @@ function renderQ() {
   document.getElementById('q-cat').textContent = q.cat;
   document.getElementById('q-text').textContent = q.text;
   document.getElementById('btn-prev').disabled = cur === 0;
-
+ 
   const badge = document.getElementById('q-multi-badge');
   q.multi ? badge.classList.remove('hidden') : badge.classList.add('hidden');
-
+ 
   const isLast = cur === total - 1;
   document.getElementById('btn-next').innerHTML = isLast
     ? `Voir mon résultat <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
     : `Suivant <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
+ 
   const container = document.getElementById('opts');
   container.innerHTML = '';
   q.opts.forEach((o, i) => {
@@ -748,12 +854,12 @@ function renderQ() {
     btn.onclick = () => selectOpt(i);
     container.appendChild(btn);
   });
-
+ 
   const card = document.getElementById('q-card');
   card.style.animation = 'none'; void card.offsetWidth; card.style.animation = 'up .3s ease both';
   document.getElementById('warn-msg').textContent = '';
 }
-
+ 
 function selectOpt(i) {
   const q = Q[cur];
   if (q.multi) {
@@ -764,7 +870,7 @@ function selectOpt(i) {
   }
   renderQ();
 }
-
+ 
 function nextQ() {
   const q = Q[cur];
   const empty = q.multi ? answers[cur].length === 0 : answers[cur] === null;
@@ -777,9 +883,9 @@ function nextQ() {
   if (cur < Q.length - 1) { cur++; renderQ(); }
   else showResult();
 }
-
+ 
 function prevQ() { if (cur > 0) { cur--; renderQ(); } }
-
+ 
 /* ─────────────────────────────────────────────
    CALCUL SCORE
 ───────────────────────────────────────────── */
@@ -800,7 +906,7 @@ function calcScore() {
   });
   return total;
 }
-
+ 
 /* ─────────────────────────────────────────────
    RÉSULTAT
 ───────────────────────────────────────────── */
@@ -809,22 +915,22 @@ function showResult() {
   myLvlIdx = LEVELS.findIndex(l => total >= l.min && total <= l.max);
   if (myLvlIdx === -1) myLvlIdx = LEVELS.length - 1;
   const lv = LEVELS[myLvlIdx];
-
+ 
   document.getElementById('res-emoji').textContent = lv.emoji;
   document.getElementById('res-name').textContent = lv.name;
   document.getElementById('res-score-line').textContent = `Score : ${total} points · ${lv.range}`;
   document.getElementById('res-pts').textContent = `${total} pts`;
   document.getElementById('res-desc').textContent = lv.desc;
-
+ 
   const halo = document.getElementById('res-halo');
   halo.style.background = `radial-gradient(circle, ${lv.color}44, transparent 70%)`;
-
+ 
   const bar = document.getElementById('res-bar');
   bar.style.background = lv.color;
   bar.style.width = '0%';
   // Normalize: theoretical max ~90
   setTimeout(() => { bar.style.width = `${Math.max(5, Math.min(100, Math.round((total / 80) * 100)))}%`; }, 300);
-
+ 
   // Breakdown
   const bkRows = document.getElementById('bk-rows');
   bkRows.innerHTML = '';
@@ -835,12 +941,44 @@ function showResult() {
     div.innerHTML = `<span class="bk-cat">${cat}</span><span class="bk-val ${cls}">${sc > 0 ? '+' : ''}${sc}</span>`;
     bkRows.appendChild(div);
   });
-
+ 
   buildGrid();
   show('result-screen');
   openLevelCard(myLvlIdx);
+ 
+  /* Envoi des données vers Google Sheet (en arrière-plan) */
+  sendResultsToSheet(total, LEVELS[myLvlIdx]);
 }
-
+ 
+/* ─────────────────────────────────────────────
+   ENVOI VERS GOOGLE SHEET
+   (en arrière-plan, n'empêche pas l'affichage du résultat)
+───────────────────────────────────────────── */
+function sendResultsToSheet(total, level) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_YOUR")) {
+    console.warn("Apps Script URL non configurée — résultats non envoyés.");
+    return;
+  }
+  /* Sérialise les réponses : pour multi, on stocke "1,3,4" ; pour single, l'index. */
+  const reponsesSerialized = answers.map(a => Array.isArray(a) ? a.join(',') : (a === null ? '' : String(a)));
+  const payload = {
+    prenom: userIdentity.prenom,
+    nom: userIdentity.nom,
+    email: userIdentity.email,
+    scoreTotal: total,
+    niveau: `${level.emoji} ${level.name}`,
+    reponses: reponsesSerialized,
+    catScores: catScores
+  };
+  /* mode no-cors évite les blocages CORS d'Apps Script ; on n'a pas besoin de lire la réponse */
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.warn("Envoi vers Sheet échoué :", err));
+}
+ 
 function buildGrid() {
   const grid = document.getElementById('lvl-grid');
   grid.innerHTML = '';
@@ -854,7 +992,7 @@ function buildGrid() {
     grid.appendChild(c);
   });
 }
-
+ 
 function openLevelCard(idx) {
   if (openCard === idx) {
     document.getElementById('lvl-detail').classList.add('hidden');
@@ -880,13 +1018,15 @@ function openLevelCard(idx) {
   detail.style.animation = 'none'; void detail.offsetWidth; detail.style.animation = 'up .25s ease both';
   detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-
+ 
 function restart() {
   answers = Q.map(q => q.multi ? [] : null);
   cur = 0; myLvlIdx = -1; openCard = -1; catScores = {};
+  userIdentity = { prenom: "", nom: "", email: "" };
+  ['id-prenom','id-nom','id-email'].forEach(id => { document.getElementById(id).value = ''; });
   show('intro-screen');
 }
-
+ 
 show('intro-screen');
 </script>
 </body>
