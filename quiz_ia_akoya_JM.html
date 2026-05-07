@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz IA — Journée du 1er Juin · Akoya</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F0E0C;
+  --bg2: #1A1916;
+  --bg3: #242220;
+  --card: #1E1D1B;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.15);
+  --ink: #F0EDE8;
+  --ink2: #A09C96;
+  --ink3: #625E59;
+  --gold: #C8943A;
+  --gold2: #E8B96A;
+  --gold-bg: rgba(200,148,58,0.12);
+  --lion: #C8943A;
+  --loup: #5B8FA8;
+  --renard: #8B5CF6;
+  --aigle: #E05A44;
+  --r: 12px;
+  --r-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(200,148,58,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 100%, rgba(139,92,246,0.06) 0%, transparent 60%);
+}
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 660px; margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ── INTRO ── */
+.intro { animation: up .5s ease both; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(200,148,58,.3);
+  padding: 5px 13px; border-radius: 100px; margin-bottom: 2rem;
+}
+.tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(34px, 8vw, 54px);
+  line-height: 1.05; font-weight: 700;
+  color: var(--ink); margin-bottom: 1.2rem;
+}
+.intro-title em { font-style: italic; color: var(--gold2); }
+
+.intro-sub {
+  font-size: 15px; color: var(--ink2); max-width: 500px;
+  line-height: 1.75; margin-bottom: 2.5rem;
+}
+
+.animals-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.a-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  border: 1px solid var(--border2); background: var(--bg2);
+  font-size: 13px; color: var(--ink2); transition: all .2s;
+}
+.a-chip:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-start {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px;
+  background: var(--gold); color: #0F0E0C;
+  border: none; border-radius: var(--r);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+  cursor: pointer;
+  transition: transform .15s, background .15s;
+}
+.btn-start:hover { background: var(--gold2); transform: translateY(-2px); }
+
+.intro-note {
+  margin-top: 1.25rem; font-size: 13px; color: var(--ink3);
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ── QUIZ ── */
+.quiz-screen { display: none; }
+
+.qz-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2rem;
+}
+.qz-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; color: var(--ink2);
+}
+.qz-logo span { color: var(--gold); font-style: italic; }
+.qz-meta { font-size: 12px; color: var(--ink3); }
+
+.prog-area { margin-bottom: 2rem; }
+.prog-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 7px; }
+.prog-track { height: 2px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.prog-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  animation: up .3s ease both;
+}
+
+.q-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.q-cat {
+  font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gold); background: var(--gold-bg);
+  padding: 3px 10px; border-radius: 100px;
+}
+.q-multi-badge {
+  font-size: 10px; color: var(--ink3);
+  border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 100px;
+}
+
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px; line-height: 1.45; color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+
+.opts { display: flex; flex-direction: column; gap: 9px; }
+
+.opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg2);
+  cursor: pointer;
+  font-size: 13.5px; color: var(--ink2);
+  transition: all .15s; text-align: left; width: 100%;
+  font-family: 'DM Sans', sans-serif; line-height: 1.5;
+}
+.opt:hover { border-color: var(--border2); color: var(--ink); background: var(--bg3); }
+.opt.selected {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+  color: var(--gold2);
+}
+.opt-check {
+  width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
+  border: 1px solid var(--border2); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.opt.single .opt-check { border-radius: 50%; }
+.opt.selected .opt-check { background: var(--gold); border-color: var(--gold); }
+.check-svg { display: none; }
+.opt.selected .check-svg { display: block; }
+
+.nav-row { display: flex; justify-content: space-between; align-items: center; }
+
+.btn-prev {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 16px;
+  background: transparent; color: var(--ink3);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  cursor: pointer; transition: all .15s;
+}
+.btn-prev:hover { color: var(--ink); border-color: var(--border2); }
+.btn-prev:disabled { opacity: .3; cursor: not-allowed; }
+
+.btn-next {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 22px;
+  background: var(--gold); color: #0F0E0C;
+  border: none; border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .15s;
+}
+.btn-next:hover { background: var(--gold2); transform: translateY(-1px); }
+
+.warn-msg { font-size: 12px; color: #E05A44; text-align: center; margin-top: .75rem; min-height: 18px; }
+
+/* ── RESULT ── */
+.result-screen { display: none; }
+
+.res-hero {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  animation: revealR .6s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes revealR { from { opacity:0; transform:translateY(20px) scale(.97); } to { opacity:1; transform:none; } }
+
+.res-emoji-wrap { position: relative; display: inline-block; margin-bottom: 1rem; }
+.res-emoji { font-size: 68px; display: block; animation: anIn .7s cubic-bezier(.16,1,.3,1) .15s both; }
+@keyframes anIn { from { transform: scale(.4) rotate(-12deg); opacity:0; } to { transform: none; opacity:1; } }
+.res-halo { position: absolute; inset: -24px; border-radius: 50%; z-index: -1; animation: halo 3s ease-in-out infinite; }
+@keyframes halo { 0%,100%{ opacity:.3; transform:scale(1); } 50%{ opacity:.6; transform:scale(1.15); } }
+
+.res-tag { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.res-name { font-family: 'Playfair Display', serif; font-size: 38px; line-height: 1.1; margin-bottom: .4rem; }
+.res-score { font-size: 13px; color: var(--ink3); margin-bottom: 1.5rem; }
+
+.score-row { display: flex; align-items: center; gap: 12px; max-width: 300px; margin: 0 auto 1.5rem; }
+.score-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(.4,0,.2,1) .35s; }
+.score-pts { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; }
+
+.res-desc { font-size: 14.5px; color: var(--ink2); line-height: 1.75; max-width: 460px; margin: 0 auto; }
+
+/* ── LEVELS GRID ── */
+.levels-sec { animation: up .4s ease .3s both; }
+.levels-lbl { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); text-align: center; margin-bottom: 1rem; }
+
+.lvl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+.lvl-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 16px 10px;
+  text-align: center; cursor: pointer;
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.lvl-card:hover { transform: translateY(-3px); border-color: var(--border2); }
+.lvl-card.active { border-width: 1.5px; transform: translateY(-3px); }
+.lvl-card.mine::after {
+  content: 'MOI';
+  position: absolute; top: 7px; right: 7px;
+  font-size: 8px; font-weight: 600; letter-spacing: .06em;
+  color: #0F0E0C; background: var(--gold);
+  padding: 2px 6px; border-radius: 4px;
+}
+.lc-em { font-size: 28px; display: block; margin-bottom: 7px; }
+.lc-name { font-size: 11px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.lc-range { font-size: 10px; color: var(--ink3); }
+
+/* ── DETAIL PANEL ── */
+.lvl-detail {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 1.5rem;
+  margin-top: 1rem; animation: up .25s ease both;
+}
+.ld-head { display: flex; align-items: center; gap: 14px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.ld-em { font-size: 38px; }
+.ld-n { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); }
+.ld-r { font-size: 12px; color: var(--ink3); margin-top: 3px; }
+.ld-desc { font-size: 14px; color: var(--ink2); line-height: 1.7; margin-bottom: 1rem; }
+.ld-tips-t { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.ld-tip { display: flex; gap: 8px; font-size: 13px; color: var(--ink2); margin-bottom: 6px; }
+.ld-tip::before { content: '→'; color: var(--ink3); flex-shrink: 0; }
+
+/* ── SCORE BREAKDOWN ── */
+.breakdown {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 1.25rem 1.5rem;
+  margin-top: 1rem; animation: up .4s ease .4s both;
+}
+.bk-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1rem; }
+.bk-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; }
+.bk-cat { color: var(--ink2); }
+.bk-val { font-weight: 500; }
+.bk-val.pos { color: var(--gold); }
+.bk-val.neg { color: #E05A44; }
+.bk-val.neu { color: var(--ink3); }
+
+/* ── FOOTER ── */
+.res-footer { text-align: center; margin-top: 2rem; animation: up .4s ease .5s both; }
+.btn-restart {
+  padding: 9px 20px;
+  background: transparent; color: var(--ink3);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  cursor: pointer; transition: all .15s;
+}
+.btn-restart:hover { color: var(--ink); border-color: var(--border2); }
+
+.hidden { display: none !important; }
+@keyframes up { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+@media (max-width: 480px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .lvl-grid { grid-template-columns: repeat(2, 1fr); }
+  .q-card { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ INTRO ══ -->
+<div class="intro" id="intro-screen">
+  <div class="tag"><span class="tag-dot"></span>Journée IA · 1er Juin 2026</div>
+  <h1 class="intro-title">Quel prédateur<br>IA es-tu <em>vraiment&nbsp;?</em></h1>
+  <p class="intro-sub">15 questions calibrées pour consultants. On sait que tu utilises l'IA au quotidien — ici, on va chercher à comprendre <em>comment</em> et <em>jusqu'où</em>.</p>
+  <div class="animals-row">
+    <div class="a-chip">🦁 Lion</div>
+    <div class="a-chip">🐺 Loup</div>
+    <div class="a-chip">🦊 Renard</div>
+    <div class="a-chip">🦅 Aigle</div>
+  </div>
+  <button class="btn-start" id="btn-start">
+    Démarrer
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <p class="intro-note">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4M8 5.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    ~7 minutes · Certaines questions admettent plusieurs réponses
+  </p>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="quiz-screen" id="quiz-screen">
+  <div class="qz-top">
+    <div class="qz-logo">Quiz <span>IA</span></div>
+    <div class="qz-meta">Akoya · 1er Juin 2026</div>
+  </div>
+  <div class="prog-area">
+    <div class="prog-row">
+      <span id="q-label">Question 1 / 15</span>
+      <span id="q-pct">0 %</span>
+    </div>
+    <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  </div>
+  <div class="q-card" id="q-card">
+    <div class="q-meta">
+      <span class="q-cat" id="q-cat"></span>
+      <span class="q-multi-badge hidden" id="q-multi-badge">Plusieurs réponses possibles</span>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-prev" id="btn-prev" onclick="prevQ()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Précédent
+    </button>
+    <button class="btn-next" id="btn-next" onclick="nextQ()">
+      Suivant
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <p class="warn-msg" id="warn-msg"></p>
+</div>
+
+<!-- ══ RESULT ══ -->
+<div class="result-screen" id="result-screen">
+  <div class="res-hero">
+    <div class="res-tag">Ton animal IA</div>
+    <div class="res-emoji-wrap">
+      <div class="res-halo" id="res-halo"></div>
+      <span class="res-emoji" id="res-emoji"></span>
+    </div>
+    <div class="res-name" id="res-name"></div>
+    <div class="res-score" id="res-score-line"></div>
+    <div class="score-row">
+      <div class="score-track"><div class="score-fill" id="res-bar" style="width:0%"></div></div>
+      <div class="score-pts" id="res-pts"></div>
+    </div>
+    <p class="res-desc" id="res-desc"></p>
+  </div>
+
+  <div class="breakdown" id="breakdown">
+    <div class="bk-title">Détail par thème</div>
+    <div id="bk-rows"></div>
+  </div>
+
+  <div class="levels-sec" style="margin-top:1.5rem;">
+    <div class="levels-lbl">Compare avec les autres niveaux</div>
+    <div class="lvl-grid" id="lvl-grid"></div>
+    <div class="lvl-detail hidden" id="lvl-detail">
+      <div class="ld-head">
+        <div class="ld-em" id="ld-em"></div>
+        <div><div class="ld-n" id="ld-n"></div><div class="ld-r" id="ld-r"></div></div>
+      </div>
+      <p class="ld-desc" id="ld-desc"></p>
+      <div class="ld-tips-t">Ce niveau en pratique</div>
+      <div id="ld-tips"></div>
+    </div>
+  </div>
+
+  <div class="res-footer">
+    <button class="btn-restart" onclick="restart()">↩ Recommencer</button>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+/* ─────────────────────────────────────────────
+   QUESTIONS
+   score: tableau de scores par réponse (peut être négatif)
+   multi: true = plusieurs réponses cumulatives
+   cat: thème affiché
+───────────────────────────────────────────── */
+const Q = [
+
+  /* 1 — Posture de production */
+  {
+    cat: "Posture de production",
+    text: "Quand tu produis un livrable (note, slide, analyse…), comment l'IA s'intègre dans ton process ?",
+    multi: false,
+    opts: [
+      "Je l'utilise en fin de process pour polisher ou reformuler",
+      "Je l'utilise à certaines étapes clés, mais le plan et les idées viennent de moi",
+      "Je co-construis avec l'IA dès le début : structuration, contenu, itérations successives",
+      "Je délègue une grande partie de la production à l'IA et je relis/valide"
+    ],
+    scores: [1, 3, 5, 2]
+    // Déléguer sans itérer = usage passif peu différenciant
+  },
+
+  /* 2 — Qualité du prompt (multi) */
+  {
+    cat: "Craft du prompt",
+    text: "Quelles techniques appliques-tu systématiquement quand tu rédiges un prompt important ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "Je définis un rôle ou une expertise à l'IA (ex. « tu es un expert en stratégie »)",
+      "Je fournis du contexte sur la situation et l'objectif final",
+      "Je donne des exemples du résultat attendu (few-shot)",
+      "Je demande à l'IA de raisonner étape par étape avant de répondre",
+      "Je décompose les tâches complexes en plusieurs requêtes séquencées",
+      "Je teste et itère plusieurs formulations pour comparer les outputs"
+    ],
+    scores: [1, 1, 2, 2, 2, 1]
+    // Max 9 points — maîtrise réelle du prompting
+  },
+
+  /* 3 — Gestion des erreurs / esprit critique */
+  {
+    cat: "Esprit critique",
+    text: "L'IA te donne une analyse stratégique convaincante mais tu as un doute. Que fais-tu ?",
+    multi: false,
+    opts: [
+      "Je l'intègre si elle semble cohérente — l'IA est généralement fiable sur ce type de contenu",
+      "Je recroupe avec mes propres connaissances ou des sources externes avant d'utiliser",
+      "Je reformule ma demande en ajoutant des contraintes ou contre-exemples pour challenger la réponse",
+      "Je demande à l'IA elle-même d'identifier les limites et biais de son analyse"
+    ],
+    scores: [-2, 2, 4, 5]
+    // Confiance aveugle = malus significatif
+  },
+
+  /* 4 — Connaissance des limites (multi) */
+  {
+    cat: "Esprit critique",
+    text: "Dans quelles situations l'IA te déçoit ou t'a déjà posé des problèmes ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "Sur des données chiffrées précises ou des calculs",
+      "Sur du raisonnement causal complexe (cause → effet dans un système)",
+      "Sur des sujets très récents ou très spécifiques à un secteur",
+      "Sur des tâches nécessitant une vraie compréhension du contexte client",
+      "Honnêtement, je n'ai pas encore identifié de vraies limites"
+    ],
+    scores: [2, 2, 2, 2, -4]
+    // Ne pas identifier de limites = signal d'usage superficiel
+  },
+
+  /* 5 — Automatisation */
+  {
+    cat: "Automatisation",
+    text: "As-tu déjà conçu ou utilisé un workflow intégrant l'IA pour automatiser une tâche récurrente (pas juste une conversation ponctuelle) ?",
+    multi: false,
+    opts: [
+      "Non, j'utilise l'IA conversation par conversation",
+      "J'ai des templates de prompts réutilisables que j'adapte à chaque fois",
+      "Oui, j'ai connecté l'IA à d'autres outils (via API, Make, Zapier, scripts…)",
+      "Oui, je conçois des workflows multi-étapes avec des agents ou des LLM enchaînés"
+    ],
+    scores: [0, 2, 4, 6]
+  },
+
+  /* 6 — Modèles & outils */
+  {
+    cat: "Culture IA",
+    text: "Quel(s) outil(s) IA utilises-tu réellement dans ton travail ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "ChatGPT / GPT-4",
+      "Claude (Anthropic)",
+      "Gemini / Bard",
+      "Copilot (Microsoft 365)",
+      "Perplexity ou autre IA de recherche",
+      "Outils IA spécialisés (Midjourney, ElevenLabs, Cursor, Notion AI…)",
+      "Je code ou j'utilise des APIs LLM directement"
+    ],
+    scores: [1, 1, 1, 1, 2, 2, 4]
+    // Diversité et profondeur d'usage récompensées
+  },
+
+  /* 7 — RAG / contexte long */
+  {
+    cat: "Technique",
+    text: "Quand tu travailles sur un projet avec beaucoup de documents sources, comment exploites-tu l'IA ?",
+    multi: false,
+    opts: [
+      "Je résume les documents un par un et je synthétise moi-même",
+      "Je colle les documents directement dans le contexte et je pose mes questions",
+      "J'utilise des outils capables d'indexer et d'interroger de larges corpus (RAG, NotebookLM…)",
+      "Je construis des pipelines pour ingérer, chunker et requêter mes données via un LLM"
+    ],
+    scores: [1, 2, 4, 6]
+  },
+
+  /* 8 — Posture éthique / confidentialité */
+  {
+    cat: "Posture & éthique",
+    text: "Comment gères-tu la confidentialité des données clients quand tu utilises l'IA ?",
+    multi: false,
+    opts: [
+      "J'anonymise systématiquement avant de mettre quoi que ce soit dans un LLM",
+      "Je fais attention pour les données très sensibles, mais j'utilise librement pour le reste",
+      "Je n'ai pas de règle précise, ça dépend du contexte",
+      "Je ne me pose pas trop la question — les LLMs grand public ne retiennent pas vraiment les données"
+    ],
+    scores: [5, 2, 0, -3]
+  },
+
+  /* 9 — Évaluation des outputs */
+  {
+    cat: "Esprit critique",
+    text: "Comment évalues-tu si un output IA est vraiment bon ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "Je vérifie que c'est fluide et bien rédigé",
+      "Je compare avec ce que j'aurais écrit moi-même",
+      "Je checke les faits et affirmations factuelles qui peuvent être vérifiés",
+      "Je teste si l'IA aurait pu produire le même résultat avec une question plus vague",
+      "Je soumets l'output à un collègue ou à l'IA elle-même pour le challenger"
+    ],
+    scores: [0, 1, 2, 3, 3]
+  },
+
+  /* 10 — Veille & apprentissage */
+  {
+    cat: "Culture IA",
+    text: "Comment restes-tu à jour sur l'évolution des outils et usages IA ?",
+    multi: false,
+    opts: [
+      "Je découvre au fil des conversations ou quand un collègue partage quelque chose",
+      "Je lis occasionnellement des articles ou newsletters sur le sujet",
+      "Je suis activement des sources spécialisées et je teste les nouvelles fonctionnalités dès leur sortie",
+      "Je contribue à diffuser et à structurer les connaissances IA dans mon entourage pro"
+    ],
+    scores: [0, 1, 3, 5]
+  },
+
+  /* 11 — Thinking partner */
+  {
+    cat: "Usages avancés",
+    text: "Utilises-tu l'IA comme « sparring partner » intellectuel (challenger tes hypothèses, jouer l'avocat du diable, simuler un contradicteur) ?",
+    multi: false,
+    opts: [
+      "Non, je l'utilise surtout pour produire du contenu",
+      "Parfois, pour reformuler ou tester une argumentation",
+      "Oui, régulièrement — je lui demande de critiquer mes raisonnements avant de les défendre",
+      "Oui, et j'ai des frameworks de prompts dédiés pour ce type d'échange dialectique"
+    ],
+    scores: [0, 2, 4, 6]
+  },
+
+  /* 12 — Impact sur la productivité */
+  {
+    cat: "Impact mesuré",
+    text: "Quel est l'impact concret de l'IA sur ton temps de production, à ta meilleure estimation ?",
+    multi: false,
+    opts: [
+      "Difficile à dire — je ne mesure pas vraiment",
+      "~10–20 % de gain sur certaines tâches",
+      "~30–50 % de gain sur mes productions principales",
+      "Plus de 50 % — l'IA a fondamentalement changé ma façon de travailler"
+    ],
+    scores: [0, 1, 3, 5]
+  },
+
+  /* 13 — Partage & leadership IA */
+  {
+    cat: "Leadership IA",
+    text: "Quel rôle joues-tu vis-à-vis de l'IA dans ton équipe ou ton cabinet ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "Je partage spontanément des prompts ou astuces qui marchent bien",
+      "J'ai créé ou co-créé des ressources partagées (prompt library, guides, templates…)",
+      "J'accompagne ou forme des collègues moins à l'aise avec l'IA",
+      "Je pilote ou contribue à une initiative IA dans mon organisation",
+      "Pour l'instant je me concentre sur mes propres usages"
+    ],
+    scores: [2, 3, 3, 4, 0]
+  },
+
+  /* 14 — Connaissance des modèles */
+  {
+    cat: "Culture IA",
+    text: "Parmi les affirmations suivantes, lesquelles sont vraies selon toi ? (plusieurs réponses possibles)",
+    multi: true,
+    opts: [
+      "Les LLMs ont une fenêtre de contexte limitée qui influence la qualité de leurs réponses",
+      "GPT-4 et Claude ont des comportements distincts sur certaines tâches (raisonnement, créativité, sécurité…)",
+      "Le « temperature » d'un modèle influence la créativité / cohérence des outputs",
+      "Les LLMs peuvent produire des résultats différents à chaque appel même avec le même prompt",
+      "Les LLMs « comprennent » réellement le sens des textes qu'ils traitent"
+    ],
+    scores: [2, 2, 2, 2, -2]
+    // La dernière est fausse — comprendre ≠ prédire statistiquement
+  },
+
+  /* 15 — Vision stratégique */
+  {
+    cat: "Vision stratégique",
+    text: "Quelle affirmation décrit le mieux ta vision de l'IA dans le consulting dans 2–3 ans ?",
+    multi: false,
+    opts: [
+      "L'IA sera un outil de productivité puissant, mais le cœur du métier reste humain et inchangé",
+      "L'IA va transformer certaines étapes de delivery mais pas la relation client ni le positionnement stratégique",
+      "L'IA va remodeler profondément le métier : les cabinets qui n'adaptent pas leur modèle perdront en compétitivité",
+      "Les consultants IA-natifs vont créer de nouvelles formes d'offres qui n'existent pas encore aujourd'hui"
+    ],
+    scores: [0, 2, 3, 5]
+  },
+];
+
+/* ─────────────────────────────────────────────
+   NIVEAUX — 4 groupes calibrés
+   Max théorique : ~90 pts (variable selon multi)
+   Seuils empiriques pour tendre vers 4 groupes homogènes
+   sur une population de consultants utilisateurs IA
+───────────────────────────────────────────── */
+const LEVELS = [
+  {
+    id: "lion", emoji: "🦁", name: "Le Lion", color: "#C8943A", range: "0 – 24 pts",
+    min: -99, max: 24,
+    desc: "Courageux et enthousiaste, tu as sauté dans l'IA et tu l'utilises avec appétit. Tu maîtrises les usages de base et tu as de l'intuition — mais tu travailles encore souvent de manière intuitive, sans méthode structurée. La journée du 1er Juin va t'armer.",
+    tips: [
+      "Tu produis avec l'IA mais sans toujours itérer ou challenger ses outputs",
+      "Tes prompts sont efficaces pour des tâches simples, mais peu structurés sur des cas complexes",
+      "Tu as encore des zones blanches sur les limites réelles des LLMs",
+    ]
+  },
+  {
+    id: "loup", emoji: "🐺", name: "Le Loup", color: "#5B8FA8", range: "25 – 44 pts",
+    min: 25, max: 44,
+    desc: "Méthodique et efficace, tu as développé de vraies pratiques IA dans ton quotidien. Tu sais ce qui marche, tu évites les pièges courants, et tu commences à entraîner les autres. Il te reste à passer en mode stratège.",
+    tips: [
+      "Tu as des usages réguliers et des prompts bien rodés sur tes livrables clés",
+      "Tu as une bonne culture des limites et tu vérifies ce que l'IA produit",
+      "Explorer l'automatisation et les usages avancés (agents, RAG) est ta prochaine frontière",
+    ]
+  },
+  {
+    id: "renard", emoji: "🦊", name: "Le Renard", color: "#8B5CF6", range: "45 – 62 pts",
+    min: 45, max: 62,
+    desc: "Agile et stratège, tu exploites l'IA comme un levier de différenciation réel. Tu sais aller chercher les usages non-obvieux, tu maîtrises les techniques avancées, et tu as une vision claire de l'impact IA sur ton métier.",
+    tips: [
+      "Tu pratiques le prompting avancé et tu travailles sur des tâches complexes avec l'IA",
+      "Tu penses automatisation et tu commences à explorer les workflows et agents",
+      "Tu es une référence dans ton entourage et tu contribues à la montée en compétences collective",
+    ]
+  },
+  {
+    id: "aigle", emoji: "🦅", name: "L'Aigle", color: "#E05A44", range: "63 pts et +",
+    min: 63, max: 999,
+    desc: "Vision haute, impact fort. Tu maîtrises l'IA de bout en bout : des techniques de prompting aux pipelines automatisés, en passant par la posture critique et la dimension stratégique. Tu es un actif précieux pour la journée du 1er Juin — et pour Akoya.",
+    tips: [
+      "Tu conçois des systèmes IA, pas seulement des requêtes ponctuelles",
+      "Tu as une vision stratégique mûre sur ce que l'IA change dans le consulting",
+      "Tu formes, tu diffuses, tu tires l'équipe vers le haut",
+    ]
+  },
+];
+
+/* ─────────────────────────────────────────────
+   ÉTAT
+───────────────────────────────────────────── */
+let answers = Q.map(q => q.multi ? [] : null);
+let cur = 0;
+let myLvlIdx = -1;
+let openCard = -1;
+let catScores = {};
+
+/* ─────────────────────────────────────────────
+   RENDU
+───────────────────────────────────────────── */
+function show(id) {
+  ['intro-screen','quiz-screen','result-screen'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'block' : 'none';
+  });
+}
+
+document.getElementById('btn-start').onclick = () => { show('quiz-screen'); renderQ(); };
+
+function renderQ() {
+  const q = Q[cur];
+  const total = Q.length;
+  document.getElementById('q-label').textContent = `Question ${cur + 1} / ${total}`;
+  document.getElementById('q-pct').textContent = `${Math.round((cur / total) * 100)} %`;
+  document.getElementById('prog-bar').style.width = `${(cur / total) * 100}%`;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('btn-prev').disabled = cur === 0;
+
+  const badge = document.getElementById('q-multi-badge');
+  q.multi ? badge.classList.remove('hidden') : badge.classList.add('hidden');
+
+  const isLast = cur === total - 1;
+  document.getElementById('btn-next').innerHTML = isLast
+    ? `Voir mon résultat <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    : `Suivant <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const sel = q.multi ? answers[cur].includes(i) : answers[cur] === i;
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (q.multi ? '' : ' single') + (sel ? ' selected' : '');
+    btn.innerHTML = `
+      <span class="opt-check">
+        <svg class="check-svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M2 5l2.5 2.5L8 3" stroke="#0F0E0C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span>${o}</span>`;
+    btn.onclick = () => selectOpt(i);
+    container.appendChild(btn);
+  });
+
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none'; void card.offsetWidth; card.style.animation = 'up .3s ease both';
+  document.getElementById('warn-msg').textContent = '';
+}
+
+function selectOpt(i) {
+  const q = Q[cur];
+  if (q.multi) {
+    const idx = answers[cur].indexOf(i);
+    idx === -1 ? answers[cur].push(i) : answers[cur].splice(idx, 1);
+  } else {
+    answers[cur] = i;
+  }
+  renderQ();
+}
+
+function nextQ() {
+  const q = Q[cur];
+  const empty = q.multi ? answers[cur].length === 0 : answers[cur] === null;
+  if (empty) {
+    document.getElementById('warn-msg').textContent = '↑ Sélectionne au moins une réponse pour continuer';
+    document.getElementById('q-card').style.outline = '1px solid #E05A44';
+    setTimeout(() => { document.getElementById('q-card').style.outline = ''; }, 700);
+    return;
+  }
+  if (cur < Q.length - 1) { cur++; renderQ(); }
+  else showResult();
+}
+
+function prevQ() { if (cur > 0) { cur--; renderQ(); } }
+
+/* ─────────────────────────────────────────────
+   CALCUL SCORE
+───────────────────────────────────────────── */
+function calcScore() {
+  catScores = {};
+  let total = 0;
+  Q.forEach((q, qi) => {
+    const cat = q.cat;
+    if (!catScores[cat]) catScores[cat] = 0;
+    let pts = 0;
+    if (q.multi) {
+      answers[qi].forEach(ai => { pts += q.scores[ai]; });
+    } else {
+      if (answers[qi] !== null) pts = q.scores[answers[qi]];
+    }
+    catScores[cat] += pts;
+    total += pts;
+  });
+  return total;
+}
+
+/* ─────────────────────────────────────────────
+   RÉSULTAT
+───────────────────────────────────────────── */
+function showResult() {
+  const total = calcScore();
+  myLvlIdx = LEVELS.findIndex(l => total >= l.min && total <= l.max);
+  if (myLvlIdx === -1) myLvlIdx = LEVELS.length - 1;
+  const lv = LEVELS[myLvlIdx];
+
+  document.getElementById('res-emoji').textContent = lv.emoji;
+  document.getElementById('res-name').textContent = lv.name;
+  document.getElementById('res-score-line').textContent = `Score : ${total} points · ${lv.range}`;
+  document.getElementById('res-pts').textContent = `${total} pts`;
+  document.getElementById('res-desc').textContent = lv.desc;
+
+  const halo = document.getElementById('res-halo');
+  halo.style.background = `radial-gradient(circle, ${lv.color}44, transparent 70%)`;
+
+  const bar = document.getElementById('res-bar');
+  bar.style.background = lv.color;
+  bar.style.width = '0%';
+  // Normalize: theoretical max ~90
+  setTimeout(() => { bar.style.width = `${Math.max(5, Math.min(100, Math.round((total / 80) * 100)))}%`; }, 300);
+
+  // Breakdown
+  const bkRows = document.getElementById('bk-rows');
+  bkRows.innerHTML = '';
+  Object.entries(catScores).forEach(([cat, sc]) => {
+    const div = document.createElement('div');
+    div.className = 'bk-row';
+    const cls = sc > 3 ? 'pos' : sc < 0 ? 'neg' : 'neu';
+    div.innerHTML = `<span class="bk-cat">${cat}</span><span class="bk-val ${cls}">${sc > 0 ? '+' : ''}${sc}</span>`;
+    bkRows.appendChild(div);
+  });
+
+  buildGrid();
+  show('result-screen');
+  openLevelCard(myLvlIdx);
+}
+
+function buildGrid() {
+  const grid = document.getElementById('lvl-grid');
+  grid.innerHTML = '';
+  LEVELS.forEach((lv, i) => {
+    const c = document.createElement('div');
+    c.className = 'lvl-card' + (i === myLvlIdx ? ' mine' : '');
+    c.id = `lc-${i}`;
+    c.style.borderColor = i === myLvlIdx ? lv.color : '';
+    c.innerHTML = `<span class="lc-em">${lv.emoji}</span><div class="lc-name">${lv.name.replace('Le ','').replace("L'",'')}</div><div class="lc-range">${lv.range}</div>`;
+    c.onclick = () => openLevelCard(i);
+    grid.appendChild(c);
+  });
+}
+
+function openLevelCard(idx) {
+  if (openCard === idx) {
+    document.getElementById('lvl-detail').classList.add('hidden');
+    document.querySelectorAll('.lvl-card').forEach(c => c.classList.remove('active'));
+    openCard = -1; return;
+  }
+  openCard = idx;
+  const lv = LEVELS[idx];
+  document.querySelectorAll('.lvl-card').forEach((c, i) => {
+    c.classList.toggle('active', i === idx);
+    c.style.borderColor = (i === idx || i === myLvlIdx) ? LEVELS[i].color : '';
+  });
+  document.getElementById('ld-em').textContent = lv.emoji;
+  document.getElementById('ld-n').textContent = lv.name;
+  document.getElementById('ld-r').textContent = lv.range;
+  document.getElementById('ld-desc').textContent = lv.desc;
+  const tips = document.getElementById('ld-tips');
+  tips.innerHTML = '';
+  lv.tips.forEach(t => { const d = document.createElement('div'); d.className = 'ld-tip'; d.textContent = t; tips.appendChild(d); });
+  const detail = document.getElementById('lvl-detail');
+  detail.style.borderColor = lv.color;
+  detail.classList.remove('hidden');
+  detail.style.animation = 'none'; void detail.offsetWidth; detail.style.animation = 'up .25s ease both';
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function restart() {
+  answers = Q.map(q => q.multi ? [] : null);
+  cur = 0; myLvlIdx = -1; openCard = -1; catScores = {};
+  show('intro-screen');
+}
+
+show('intro-screen');
+</script>
+</body>
+</html>
